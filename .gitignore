@@ -4,3 +4,7 @@
 *.user
 *.suo
 appsettings.Development.json
+
+# Planning documents
+IMPLEMENTATION_PLAN.md
+GIT_COMMIT_STRATEGY.md

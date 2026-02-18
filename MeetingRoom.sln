@@ -9,7 +9,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetingRoom.Api", "MeetingRoom.Api\MeetingRoom.Api.csproj", "{6629BBCD-751D-47A1-B59D-276E545F5BDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetingRoom.Domain", "MeetingRoom.Domain\MeetingRoom.Domain.csproj", "{C0DB29BC-EE03-4FBA-8279-C5260A0D66E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetingRoom.Application", "MeetingRoom.Application\MeetingRoom.Application.csproj", "{E5EE8758-364D-45B3-9EF3-2FA4E5F63F2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetingRoom.Infrastructure", "MeetingRoom.Infrastructure\MeetingRoom.Infrastructure.csproj", "{AC02D8EE-01A3-48B2-97EE-2A2F859CDE7F}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6629BBCD-751D-47A1-B59D-276E545F5BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6629BBCD-751D-47A1-B59D-276E545F5BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6629BBCD-751D-47A1-B59D-276E545F5BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6629BBCD-751D-47A1-B59D-276E545F5BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0DB29BC-EE03-4FBA-8279-C5260A0D66E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0DB29BC-EE03-4FBA-8279-C5260A0D66E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0DB29BC-EE03-4FBA-8279-C5260A0D66E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0DB29BC-EE03-4FBA-8279-C5260A0D66E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5EE8758-364D-45B3-9EF3-2FA4E5F63F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5EE8758-364D-45B3-9EF3-2FA4E5F63F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5EE8758-364D-45B3-9EF3-2FA4E5F63F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5EE8758-364D-45B3-9EF3-2FA4E5F63F2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC02D8EE-01A3-48B2-97EE-2A2F859CDE7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC02D8EE-01A3-48B2-97EE-2A2F859CDE7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC02D8EE-01A3-48B2-97EE-2A2F859CDE7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC02D8EE-01A3-48B2-97EE-2A2F859CDE7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
