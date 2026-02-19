@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MeetingRoom.Api.Models;
 using MeetingRoom.Application.DTOs.Reservation;
@@ -10,10 +11,14 @@ namespace MeetingRoom.Api.Controllers;
 public class ReservationsController : ControllerBase
 {
     private readonly IReservationService _reservationService;
+    private readonly IValidator<CreateReservationDto> _createValidator;
+    private readonly IValidator<UpdateReservationDto> _updateValidator;
 
-    public ReservationsController(IReservationService reservationService)
+    public ReservationsController(IReservationService reservationService, IValidator<CreateReservationDto> createValidator, IValidator<UpdateReservationDto> updateValidator)
     {
         _reservationService = reservationService;
+        _createValidator = createValidator;
+        _updateValidator = updateValidator;
     }
 
     [HttpGet]
@@ -53,6 +58,9 @@ public class ReservationsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ApiResponse<ReservationDto>>> Create([FromBody] CreateReservationDto dto, CancellationToken cancellationToken)
     {
+        var result = await _createValidator.ValidateAsync(dto, cancellationToken);
+        if (!result.IsValid)
+            throw new ValidationException(result.Errors);
         var reservation = await _reservationService.CreateAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = reservation.Id }, new ApiResponse<ReservationDto> { Success = true, Data = reservation });
     }
@@ -60,6 +68,9 @@ public class ReservationsController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult<ApiResponse<ReservationDto>>> Update(int id, [FromBody] UpdateReservationDto dto, CancellationToken cancellationToken)
     {
+        var result = await _updateValidator.ValidateAsync(dto, cancellationToken);
+        if (!result.IsValid)
+            throw new ValidationException(result.Errors);
         var reservation = await _reservationService.UpdateAsync(id, dto, cancellationToken);
         if (reservation is null)
             return NotFound(new ApiResponse<ReservationDto> { Success = false, Message = "Reservation not found or canceled." });

@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MeetingRoom.Api.Models;
 using MeetingRoom.Application.DTOs.Room;
@@ -10,10 +11,14 @@ namespace MeetingRoom.Api.Controllers;
 public class RoomsController : ControllerBase
 {
     private readonly IRoomService _roomService;
+    private readonly IValidator<CreateRoomDto> _createValidator;
+    private readonly IValidator<UpdateRoomDto> _updateValidator;
 
-    public RoomsController(IRoomService roomService)
+    public RoomsController(IRoomService roomService, IValidator<CreateRoomDto> createValidator, IValidator<UpdateRoomDto> updateValidator)
     {
         _roomService = roomService;
+        _createValidator = createValidator;
+        _updateValidator = updateValidator;
     }
 
     [HttpGet]
@@ -35,6 +40,9 @@ public class RoomsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ApiResponse<RoomDto>>> Create([FromBody] CreateRoomDto dto, CancellationToken cancellationToken)
     {
+        var result = await _createValidator.ValidateAsync(dto, cancellationToken);
+        if (!result.IsValid)
+            throw new ValidationException(result.Errors);
         var room = await _roomService.CreateAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = room.Id }, new ApiResponse<RoomDto> { Success = true, Data = room });
     }
@@ -42,6 +50,9 @@ public class RoomsController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult<ApiResponse<RoomDto>>> Update(int id, [FromBody] UpdateRoomDto dto, CancellationToken cancellationToken)
     {
+        var result = await _updateValidator.ValidateAsync(dto, cancellationToken);
+        if (!result.IsValid)
+            throw new ValidationException(result.Errors);
         var room = await _roomService.UpdateAsync(id, dto, cancellationToken);
         if (room is null)
             return NotFound(new ApiResponse<RoomDto> { Success = false, Message = "Room not found." });

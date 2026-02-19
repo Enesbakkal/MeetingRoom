@@ -1,11 +1,12 @@
 using System.Net;
 using System.Text.Json;
+using FluentValidation;
 using MeetingRoom.Api.Models;
 
 namespace MeetingRoom.Api.Middleware;
 
 // Döndürülen HTTP durum kodları:
-// 400 Bad Request  -> InvalidOperationException, ArgumentException (örn. conflict, validasyon)
+// 400 Bad Request  -> ValidationException (FluentValidation), InvalidOperationException, ArgumentException
 // 404 Not Found    -> KeyNotFoundException
 // 500 Internal Server Error -> Diğer tüm hatalar
 public class ExceptionHandlingMiddleware
@@ -34,13 +35,14 @@ public class ExceptionHandlingMiddleware
 
     private static async Task HandleAsync(HttpContext context, Exception ex)
     {
-        // 400: InvalidOperationException, ArgumentException | 404: KeyNotFoundException | 500: diğer
-        var (statusCode, message) = ex switch
+        // 400: ValidationException, InvalidOperationException, ArgumentException | 404: KeyNotFoundException | 500: diğer
+        var (statusCode, message, errors) = ex switch
         {
-            InvalidOperationException => (HttpStatusCode.BadRequest, ex.Message),   // 400
-            ArgumentException => (HttpStatusCode.BadRequest, ex.Message),           // 400
-            KeyNotFoundException => (HttpStatusCode.NotFound, ex.Message),            // 404
-            _ => (HttpStatusCode.InternalServerError, "An error occurred.")         // 500
+            ValidationException validation => (HttpStatusCode.BadRequest, "Validation failed.", validation.Errors.Select(e => e.ErrorMessage).ToList()),
+            InvalidOperationException => (HttpStatusCode.BadRequest, ex.Message, new List<string> { ex.Message }),
+            ArgumentException => (HttpStatusCode.BadRequest, ex.Message, new List<string> { ex.Message }),
+            KeyNotFoundException => (HttpStatusCode.NotFound, ex.Message, new List<string> { ex.Message }),
+            _ => (HttpStatusCode.InternalServerError, "An error occurred.", (List<string>?)null)
         };
 
         context.Response.ContentType = "application/json";
@@ -50,7 +52,7 @@ public class ExceptionHandlingMiddleware
         {
             Success = false,
             Message = message,
-            Errors = statusCode == HttpStatusCode.InternalServerError ? null : new List<string> { ex.Message }
+            Errors = errors
         };
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(response));
