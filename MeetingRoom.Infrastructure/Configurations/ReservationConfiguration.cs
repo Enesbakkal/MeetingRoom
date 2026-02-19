@@ -22,5 +22,12 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
         builder.HasIndex(x => x.RoomId);
         builder.HasIndex(x => x.UserName);
         builder.HasIndex(x => new { x.RoomId, x.StartTime, x.EndTime });
+
+        // LocalDB ile çalışanlar için seed; migration ile eklenir
+        var now = new DateTime(2025, 2, 1, 0, 0, 0, DateTimeKind.Utc);
+        builder.HasData(
+            new Reservation { Id = 1, RoomId = 1, UserName = "ali@firma.com", StartTime = now.AddDays(1).AddHours(9), EndTime = now.AddDays(1).AddHours(10), IsCanceled = false, CreatedAt = now },
+            new Reservation { Id = 2, RoomId = 1, UserName = "ayse@firma.com", StartTime = now.AddDays(1).AddHours(14), EndTime = now.AddDays(1).AddHours(15), IsCanceled = false, CreatedAt = now },
+            new Reservation { Id = 3, RoomId = 2, UserName = "mehmet@firma.com", StartTime = now.AddDays(2).AddHours(10), EndTime = now.AddDays(2).AddHours(11), IsCanceled = false, CreatedAt = now });
     }
 }

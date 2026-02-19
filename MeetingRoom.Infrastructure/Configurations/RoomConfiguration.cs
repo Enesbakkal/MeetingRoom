@@ -15,5 +15,11 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
         builder.Property(x => x.Floor).IsRequired();
         builder.Property(x => x.Equipment).HasMaxLength(500);
         builder.HasIndex(x => x.Name);
+
+        // LocalDB ile çalışanlar için seed; migration ile eklenir
+        builder.HasData(
+            new Room { Id = 1, Name = "Toplantı Odası A", Capacity = 8, Floor = 1, Equipment = "Projeksiyon, Beyaz Tahta" },
+            new Room { Id = 2, Name = "Toplantı Odası B", Capacity = 4, Floor = 1, Equipment = "Telefon, TV" },
+            new Room { Id = 3, Name = "Konferans Salonu", Capacity = 20, Floor = 2, Equipment = "Projeksiyon, Mikrofon, Beyaz Tahta" });
     }
 }
