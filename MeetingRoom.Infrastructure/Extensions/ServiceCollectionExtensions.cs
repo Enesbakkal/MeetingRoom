@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MediatR;
 using MeetingRoom.Application.Interfaces;
 using MeetingRoom.Application.Services;
 using MeetingRoom.Application.Validators;
@@ -24,9 +25,11 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IReservationSeriesRepository, ReservationSeriesRepository>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IReservationService, ReservationService>();
         services.AddValidatorsFromAssemblyContaining<CreateRoomDtoValidator>();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IRoomService).Assembly));
 
         return services;
     }
