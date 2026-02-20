@@ -27,6 +27,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IReservationSeriesRepository, ReservationSeriesRepository>();
+        services.AddScoped<IReservationExceptionRepository, ReservationExceptionRepository>();
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IReservationService, ReservationService>();
         services.AddValidatorsFromAssemblyContaining<CreateRoomDtoValidator>();

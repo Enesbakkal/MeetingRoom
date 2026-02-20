@@ -41,4 +41,19 @@ public class ReservationSeriesController : ControllerBase
         var series = await _mediator.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = series.Id }, new ApiResponse<ReservationSeriesDto> { Success = true, Data = series });
     }
+
+    [HttpGet("{id:int}/exceptions")]
+    public async Task<ActionResult<ApiResponse<IReadOnlyList<ReservationExceptionDto>>>> GetExceptions(int id, CancellationToken cancellationToken)
+    {
+        var list = await _mediator.Send(new GetReservationExceptionsQuery(id), cancellationToken);
+        return Ok(new ApiResponse<IReadOnlyList<ReservationExceptionDto>> { Success = true, Data = list });
+    }
+
+    [HttpPost("{id:int}/exceptions")]
+    public async Task<ActionResult<ApiResponse<ReservationExceptionDto>>> AddException(int id, [FromBody] AddReservationExceptionRequest request, CancellationToken cancellationToken)
+    {
+        var command = new AddReservationExceptionCommand(id, request.ExceptionDate);
+        var exception = await _mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(GetExceptions), new { id }, new ApiResponse<ReservationExceptionDto> { Success = true, Data = exception });
+    }
 }

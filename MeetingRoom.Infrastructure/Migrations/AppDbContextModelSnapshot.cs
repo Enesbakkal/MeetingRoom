@@ -115,6 +115,22 @@ namespace MeetingRoom.Infrastructure.Migrations
                     b.HasIndex("ReservationSeriesId");
 
                     b.ToTable("ReservationExceptions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ExceptionDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            ReservationSeriesId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ExceptionDate = new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            ReservationSeriesId = 1
+                        });
                 });
 
             modelBuilder.Entity("MeetingRoom.Domain.Entities.ReservationSeries", b =>
@@ -142,6 +158,24 @@ namespace MeetingRoom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ReservationSeries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EndDate = new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Haftalık Toplantı",
+                            Pattern = "Weekly",
+                            StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EndDate = new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Aylık Değerlendirme",
+                            Pattern = "Monthly",
+                            StartDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("MeetingRoom.Domain.Entities.Room", b =>
@@ -205,6 +239,15 @@ namespace MeetingRoom.Infrastructure.Migrations
                     b.HasOne("MeetingRoom.Domain.Entities.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MeetingRoom.Domain.Entities.ReservationException", b =>
+                {
+                    b.HasOne("MeetingRoom.Domain.Entities.ReservationSeries", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationSeriesId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

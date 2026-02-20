@@ -14,21 +14,6 @@ namespace MeetingRoom.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ReservationExceptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReservationSeriesId = table.Column<int>(type: "int", nullable: false),
-                    ExceptionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReservationExceptions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ReservationSeries",
                 columns: table => new
                 {
@@ -61,6 +46,27 @@ namespace MeetingRoom.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReservationExceptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReservationSeriesId = table.Column<int>(type: "int", nullable: false),
+                    ExceptionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReservationExceptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReservationExceptions_ReservationSeries_ReservationSeriesId",
+                        column: x => x.ReservationSeriesId,
+                        principalTable: "ReservationSeries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
@@ -85,6 +91,15 @@ namespace MeetingRoom.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ReservationSeries",
+                columns: new[] { "Id", "EndDate", "Name", "Pattern", "StartDate" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Haftalık Toplantı", "Weekly", new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, new DateTime(2025, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Aylık Değerlendirme", "Monthly", new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc) }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Rooms",
                 columns: new[] { "Id", "Capacity", "Equipment", "Floor", "Name" },
                 values: new object[,]
@@ -92,6 +107,15 @@ namespace MeetingRoom.Infrastructure.Migrations
                     { 1, 8, "Projeksiyon, Beyaz Tahta", 1, "Toplantı Odası A" },
                     { 2, 4, "Telefon, TV", 1, "Toplantı Odası B" },
                     { 3, 20, "Projeksiyon, Mikrofon, Beyaz Tahta", 2, "Konferans Salonu" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ReservationExceptions",
+                columns: new[] { "Id", "ExceptionDate", "IsDeleted", "ReservationSeriesId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc), false, 1 },
+                    { 2, new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Utc), false, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -137,10 +161,10 @@ namespace MeetingRoom.Infrastructure.Migrations
                 name: "ReservationExceptions");
 
             migrationBuilder.DropTable(
-                name: "ReservationSeries");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "ReservationSeries");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

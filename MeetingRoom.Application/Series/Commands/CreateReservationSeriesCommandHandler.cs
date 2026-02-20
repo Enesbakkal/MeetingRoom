@@ -16,6 +16,7 @@ public class CreateReservationSeriesCommandHandler : IRequestHandler<CreateReser
 
     public async Task<ReservationSeriesDto> Handle(CreateReservationSeriesCommand request, CancellationToken cancellationToken)
     {
+        // Sadece seri tanımı kaydedilir; Reservations tablosuna otomatik kayıt eklenmez.
         var series = new ReservationSeries
         {
             Name = request.Name,

@@ -1,6 +1,7 @@
 namespace MeetingRoom.Domain.Entities;
 
-// Placeholder for future recurring meetings (e.g. Daily, Weekly)
+// Tekrarlayan rezervasyon tanımı (örn. haftalık/aylık). Sadece metadata; seri oluşturmak
+// Reservations tablosuna otomatik kayıt eklemez. İleride genişletilebilir.
 public class ReservationSeries
 {
     public int Id { get; set; }
