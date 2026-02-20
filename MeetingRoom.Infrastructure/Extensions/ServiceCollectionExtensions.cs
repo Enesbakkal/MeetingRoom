@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
+using MeetingRoom.Application.Behaviors;
 using MeetingRoom.Application.Interfaces;
 using MeetingRoom.Application.Services;
 using MeetingRoom.Application.Validators;
@@ -30,6 +31,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IReservationService, ReservationService>();
         services.AddValidatorsFromAssemblyContaining<CreateRoomDtoValidator>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IRoomService).Assembly));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;
     }
