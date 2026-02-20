@@ -1,6 +1,12 @@
 # Meeting Room API
 Room & Reservation REST API (.NET 8).
 
+## Gereksinimler
+- **.NET 8 SDK** — [İndir](https://dotnet.microsoft.com/download/dotnet/8.0). Projeyi çalıştırmak için gereklidir.
+- **LocalDB** — Varsayılan veritabanı için (Visual Studio ile birlikte gelir). Projede connection string olarak `(LocalDb)\MSSQLLocalDB` kullanılıyor; sizin makinede instance adı farklı olabilir, gerekirse `appsettings.json` veya User Secrets içindeki connection string’i kendi ortamınıza göre düzeltmeniz gerekir.
+- **Git** — Repoyu clone etmek için (`git clone https://github.com/...`). Çoğu geliştirici makinede zaten vardır.
+- **dotnet-ef** (isteğe bağlı) — Sadece migration’ı komut satırından elle çalıştıracak veya yeni migration ekleyecekseniz gerekir. Uygulama ilk çalıştırmada migration’ı otomatik uyguladığı için sadece projeyi çalıştıracaksanız kurmanız gerekmez. Kurulum: `dotnet tool install --global dotnet-ef`
+
 ## Notlar (kod inceleyenler için)
 - **Rezervasyon Serisi ve Exception** modülü **CQRS örneklemek** için eklendi (MediatR ile Command/Query ayrımı, handler’lar, ValidationBehavior).
 - Seri (**ReservationSeries**) sadece tekrarlayan rezervasyonun **tanımıdır** (metadata). Seri oluşturmak **Reservations** tablosuna otomatik kayıt eklemez; ileride genişletilebilir. Bu tasarım Domain ve `CreateReservationSeriesCommandHandler` içinde kısa açıklamalarla belirtilmiştir.
